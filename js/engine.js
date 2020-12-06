@@ -94,12 +94,22 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        checkCollisions();
     }
 
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
-            enemy.checkCollisions(player);
+            if (player.checkCollisions(enemy)) {
+                enemy.setDefaultPosition();
+                allTreasures.forEach(treasure => treasure.setDefaultPosition())
+            }
         });
+
+        allTreasures.forEach(function(treasure) {
+            if (player.checkCollisions(treasure)) {
+                treasure.setDefaultPosition();
+            }
+        })
     }
 
     /* This function initially draws the "game level", it will then call
